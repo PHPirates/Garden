@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(NOTIFICATION_SERVICE);
         notify.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, notify); //(int id, Notification notification);
-        //to cancel:
 
 
         //TODO start activity from action button
