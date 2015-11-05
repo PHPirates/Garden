@@ -55,9 +55,12 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("notification",reminder);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, //PendingIntent contains intent
                 (int) System.currentTimeMillis(), intent, 0);
+        //view.setOnClickPendingIntent(R.id.radio, pRadio); //TODO create radio button?
 
         //Make a new intent for the action button
+        //String NOTIFY_ACTION = "com.garden.gardenapp.action.NOTIFY"; //see the manifest, intent filter
         Intent actionIntent = new Intent(this, Reminder.class);
+        //actionIntent.setAction(NOTIFY_ACTION); //bind action to intent
         actionIntent.putExtra("notifyAction",notifyString); //("STRING_I_NEED", strName)
         PendingIntent actionpIntent = PendingIntent.getActivity(this,
                 (int) System.currentTimeMillis(),actionIntent,0);
@@ -73,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 //should be addAction(NotificationCompat.Action action)
                 //.setVibrate(new long[] {200, 600, 200, 600})
                 .build();
+//        RemoteViews contentView = new RemoteViews(this.getPackageName(),
+//                R.layout.notification_layout); //TODO create notification layout
+//        setListeners (contentView);
+//        notify.contentView = contentView;
 
         //notification manager?
         NotificationManager notificationManager = (NotificationManager)
@@ -80,7 +87,20 @@ public class MainActivity extends AppCompatActivity {
         notify.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, notify); //(int id, Notification notification);
 
+
+
+        //TODO start activity from action button
+
     }
+
+//    public void setListeners() {
+//        EditText editText = (EditText) findViewById(R.id.editReminder);
+//        String reminder = editText.getText().toString();
+//
+//        Intent radio = new Intent(this, Reminder.class);
+//        radio.putExtra ("notification",reminder);
+//        PendingIntent pRadio = PendingIntent.getActivity(this, 0, radio, 0);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
