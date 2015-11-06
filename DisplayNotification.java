@@ -39,6 +39,8 @@ public class DisplayNotification extends Activity {
 
         Intent actionIntent = new Intent(this, Reminder.class);
         actionIntent.putExtra("notifyAction", snoozeString); //("STRING_I_NEED", strName)
+        //don't forget to pass the notifID also to the second intent
+        actionIntent.putExtra("NotifID",notifID);
         PendingIntent actionpIntent = PendingIntent.getActivity(this,
                 (int) System.currentTimeMillis(), actionIntent, 0);
 
