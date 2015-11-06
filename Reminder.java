@@ -28,18 +28,29 @@ public class Reminder extends AppCompatActivity {
             }
         });
 
+        /**this activity gets both strings from both intents, so that's why you need
+         * to use different intents for the notification and action buttons,
+         * so that when you click e.g. the action button the other string is empty.
+         */
+
+
+
         //the textview that shows the string the notification passed
         TextView textView = (TextView) findViewById(R.id.reminderText);
         String notifyText = getIntent().getStringExtra("notification");
         textView.setText(notifyText);
         //now the same for the action button from the notification
         TextView snoozeView = (TextView) findViewById(R.id.snoozeText);
+        //(3).... and then get String and setText!
         String actionText = getIntent().getStringExtra("notifyAction"); //getString("STRING_I_NEED");
         snoozeView.setText(actionText);
 
-        NotificationManager notificationManager = (NotificationManager)
+        //This will remove the notification if the action button is pressed
+        // instead of the notification, but only when the activity is displayed
+        NotificationManager nm = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(0);
+        nm.cancel(getIntent().getExtras().getInt("NotifID"));
+        //TODO dismiss notification when snooze is clicked
     }
 
 }
