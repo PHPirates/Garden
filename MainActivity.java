@@ -1,13 +1,11 @@
-package com.garden.gardenapp;
+package com.abbyberkers.remember;
 
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,15 +15,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    //Just a test... 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,31 +34,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //right bottom floating button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
             }
         });
-    }
-/* //for normal buttons
-    public void settings(View v) { //onclick
-        Toast.makeText(this,"button clicked",Toast.LENGTH_LONG).show();
-    }
-*/
 
-    public void setAlarm(View v) {
-        TimePicker timePicker; //TODO the pickers should be in a DialogFragment
+
+    }
+
+
+
+//buttons-------------------------------------------------------------------------------------------
+
+    public void setAlarm(View v){
+        TimePicker timePicker;
         DatePicker datePicker;
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         //get user input
-        EditText editText = (EditText) findViewById(R.id.editReminder);
-        String reminder = editText.getText().toString();
+        EditText editText = (EditText) findViewById(R.id.edit_remember);
+        String message = editText.getText().toString();
         String snoozeString = getString(R.string.snooze_result);
+
 
         //the AlarmManager
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -68,54 +70,66 @@ public class MainActivity extends AppCompatActivity {
         c.set(Calendar.YEAR, datePicker.getYear());
         c.set(Calendar.MONTH, datePicker.getMonth());
         c.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-        c.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour()); //getHour requires 23...
+        c.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
         c.set(Calendar.MINUTE, timePicker.getCurrentMinute());
         c.set(Calendar.SECOND, 0);
-
         //pIntent to launch activity when alarm triggers
-        Intent intent = new Intent("com.garden.DisplayNotification"); //(1)From here to DisplayNotification ...
-        //DisplayNotification is the activity that is intended to be evoked
-        //sometimes you have to use (this,DisplayNotification.class)?
-        //when the alarm is triggered
-
-        //assign an ID of 1, and add the text
+        Intent intent = new Intent(this, DisplayNotification.class);
         intent.putExtra("NotifID", 1);
-        intent.putExtra("notification", reminder); //("STRING_I_NEED",strnamed)
-        intent.putExtra("notifyAction", snoozeString); //string for the action button
+        intent.putExtra("notification", message);
+        intent.putExtra("snoozeNoti", snoozeString);
 
-        PendingIntent displayIntent = PendingIntent.getActivity(
-                getBaseContext(), 0,
-                intent, 0); //this intent instead of new Intent("com.garden.Reminder")
-
+        PendingIntent displayIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, 0);
 
         //sets alarm
-        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                c.getTimeInMillis(), displayIntent);
-
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), displayIntent);
 
     }
 
-    public void setAlarmNow (View view) {
-        /**
-         * This is a debugging method that is the same as setAlarm but
-         * sends a notification instantly.
-         */
-        TextView textView = (TextView) findViewById(R.id.hello);
-        EditText editText = (EditText) findViewById(R.id.editReminder);
-        String reminder = editText.getText().toString();
-        textView.setText(reminder);
-        String snoozeString = "I'm snoozed";
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent("com.garden.DisplayNotification");
-        intent.putExtra("NotifID", 1);
-        intent.putExtra("notification", reminder);
-        intent.putExtra("notifyAction", snoozeString);
-        PendingIntent displayIntent = PendingIntent.getActivity(
-                getBaseContext(), 0,
-                intent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(), displayIntent);
-    }
+        public void setAlarmNow (View view) {
+            //debugging method, same as setAlarm but sends notification instantly.
+
+            TextView textView = (TextView) findViewById(R.id.please);
+            EditText editText = (EditText) findViewById(R.id.edit_remember);
+            String message = editText.getText().toString();
+            textView.setText(message);
+            String snoozeString = "Snoozed.";
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            Intent intent = new Intent("com.abbyberkers.remember.DisplayNotification");
+            int notifID = getIntent().getExtras().getInt("notifID");
+        }
+
+//    public void createNotification(View view){
+//        EditText editText = (EditText) findViewById(R.id.edit_remember);
+//        String message = editText.getText().toString();
+//
+//        Intent intent = new Intent(this, Notified.class);
+//        intent.putExtra("notification", message);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+//
+//        Intent snoozeIntent = new Intent(this, Notified.class);
+//        snoozeIntent.putExtra("snoozeNoti", message);
+//        PendingIntent snoozepIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), snoozeIntent, 0);
+//
+//        Notification notify = new Notification.Builder(this)
+//                .setContentTitle(getString(R.string.app_name))
+//                .setContentText(message)
+//                .setSmallIcon(R.drawable.logo)
+//                .setContentIntent(pendingIntent)
+//                .addAction(R.drawable.transparant, "Snooze", snoozepIntent)
+//                //.setVibrate(new long[]{200, 200, 200, 600})
+//                .setPriority(Notification.PRIORITY_MAX)
+//                .setAutoCancel(true)
+//                .build();
+//
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        notify.flags |= Notification.FLAG_AUTO_CANCEL;
+//        notificationManager.notify(0, notify);
+//
+//    }
+
+//end buttons---------------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,15 +144,11 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        //what happens when you click what button (in the action bar)
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case R.id.action_settings:
-                Toast.makeText(this, "There are no settings yet!", Toast.LENGTH_LONG).show();
-            case R.id.action_about:
-                Toast.makeText(this, "About nothing, really.", Toast.LENGTH_LONG).show();
-                TextView textView = (TextView) findViewById(R.id.hello);
-                textView.setText(getString(R.string.newText));
-
+                Toast.makeText(this, "settings clicked", Toast.LENGTH_SHORT).show();
+            case R.id.action_options:
+                Toast.makeText(this, "options clicked", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
