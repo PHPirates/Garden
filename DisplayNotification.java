@@ -1,67 +1,49 @@
-package com.garden.gardenapp;
+package com.abbyberkers.remember;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class DisplayNotification extends Activity {
-    //called when activity is first created
-    //don't forget to update the manifest!!
+public class DisplayNotification extends AppCompatActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_display_notification);
 
         //get notification ID passed by MainActivity
         int notifID = getIntent().getExtras().getInt("NotifID");
-        //----Oh of course, have to pass on the strings again.....-----
-        //initialize strings (reminder is also used for notification text
-        String reminder = getIntent().getStringExtra("notification");
-        String snoozeString = getIntent().getStringExtra("notifyAction");
 
+        String message = getIntent().getStringExtra("notification");
+        String action_message = getIntent().getStringExtra("snoozeNoti");
 
+        Intent intent = new Intent(this, Notified.class);
+        intent.putExtra("NotifID", notifID);
+        intent.putExtra("notification", message);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        //pIntent to launch activity if user selects notification
-        /** making a new Intent has to be done with (this, Reminder.class) instead
-         * of ("com.garden.Reminder")... why? (otherwise the reminder text is not shown)
-         */
-        Intent intent = new Intent(this, Reminder.class); //(2)... and from here to Reminder ...
-        intent.putExtra("NotifID",notifID);
-        //pass on strings again in the intent
-        intent.putExtra("notification",reminder);
-        //intent.putExtra("notifyAction",snoozeString); //---> in different intent
+        Intent actionIntent = new Intent(this, Notified.class);
+        actionIntent.putExtra("NotifID", notifID);
+        actionIntent.putExtra("snoozeNoti", action_message);
+        PendingIntent actionPIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), actionIntent,0);
 
-        PendingIntent detailsIntent = PendingIntent
-                .getActivity(this, 0, intent, 0);
-
-        Intent actionIntent = new Intent(this, Reminder.class);
-        actionIntent.putExtra("notifyAction", snoozeString); //("STRING_I_NEED", strName)
-        //don't forget to pass the notifID also to the second intent
-        actionIntent.putExtra("NotifID",notifID);
-        PendingIntent actionpIntent = PendingIntent.getActivity(this,
-                (int) System.currentTimeMillis(), actionIntent, 0);
-
-
-        //create notification
-        Notification notif = new Notification.Builder(this) //build the notification
-                .setContentTitle(getString(R.string.app_name)) //required
-                .setContentText(reminder) //required
-                .setSmallIcon(R.drawable.garden) //required
-                .setContentIntent(detailsIntent) //to direct the user to an activity?
-                .addAction(R.drawable.pixel, "Snooze me", actionpIntent)
-                .setAutoCancel(true) //to be dismissed in the Reminder activity
-                .setPriority(Notification.PRIORITY_MAX) //to show the action buttons by default
+        Notification notif = new Notification.Builder(this)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(message)
+                .setSmallIcon(R.drawable.logo)
+                .setContentIntent(pendingIntent)
+                .addAction(R.drawable.transparant, "Snooze", actionPIntent)
+                .setAutoCancel(true)
+                .setPriority(Notification.PRIORITY_MAX)
                 .build();
 
-        NotificationManager nm = (NotificationManager)
-                getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         nm.notify(notifID, notif);
 
-        finish(); //because this doesn't have a GUI we don't need it anymore
 
     }
 }
