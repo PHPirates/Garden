@@ -97,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             Intent intent = new Intent("com.abbyberkers.remember.DisplayNotification");
-            int notifID = getIntent().getExtras().getInt("notifID");
+            intent.putExtra("NotifID", 1);
+            intent.putExtra("notification", message);
+            intent.putExtra("snoozeNoti", snoozeString);
+            PendingIntent displayIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, 0);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), displayIntent);
         }
 
 //    public void createNotification(View view){
