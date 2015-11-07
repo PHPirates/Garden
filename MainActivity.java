@@ -1,30 +1,43 @@
 package com.garden.gardenapp;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements DateFragment.OnDatePass,TimeFragment.OnTimePass  { //interface to get data from frag
+    FragmentManager fm = getSupportFragmentManager();
+    int year, month, day, hour, minute; //time as instance variables, much easier
+
+
+    @Override
+    public void onDatePass(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    @Override
+    public void onTimePass(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +62,25 @@ public class MainActivity extends AppCompatActivity {
     }
 */
 
+
+    public void showDateDialog(View v) {
+        DateFragment dateFragment = new DateFragment();
+        // Show DialogFragment
+        dateFragment.show(fm, "Dialog Fragment");
+    }
+
+    public void showTimeDialog(View v) {
+        TimeFragment timeFragment = new TimeFragment();
+        // Show DialogFragment
+        timeFragment.show(fm, "Dialog Fragment");
+    }
+
     public void setAlarm(View v) {
-        TimePicker timePicker; //TODO the pickers should be in a DialogFragment
-        DatePicker datePicker;
-        timePicker = (TimePicker) findViewById(R.id.timePicker);
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
         //get user input
         EditText editText = (EditText) findViewById(R.id.editReminder);
         String reminder = editText.getText().toString();
         String snoozeString = getString(R.string.snooze_result);
+
 
         //the AlarmManager
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -65,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
 
         //sets time for alarm
-        c.set(Calendar.YEAR, datePicker.getYear());
-        c.set(Calendar.MONTH, datePicker.getMonth());
-        c.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-        c.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour()); //getHour requires 23...
-        c.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
 
         //pIntent to launch activity when alarm triggers
@@ -80,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
         //assign an ID of 1, and add the text
         intent.putExtra("NotifID", 1);
-        intent.putExtra("notification", reminder); //("STRING_I_NEED",strnamed)
+        System.out.println("main"+reminder);
+        intent.putExtra("notification", reminder); //("STRING_I_NEED",strname)
         intent.putExtra("notifyAction", snoozeString); //string for the action button
 
         PendingIntent displayIntent = PendingIntent.getActivity(
