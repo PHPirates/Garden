@@ -21,9 +21,18 @@
         <activity
             android:name=".Notified"
             android:label="@string/title_activity_notified"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="com.abbyberkers.remember.Notified" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
-        <activity android:name=".DisplayNotification" >
+        <activity android:name=".DisplayNotification">
+            <intent-filter>
+                <action android:name="com.abbyberkers.remember.DisplayNotification" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 
