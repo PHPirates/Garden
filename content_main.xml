@@ -36,31 +36,31 @@
             android:hint="@string/hint"
             android:inputType="textNoSuggestions"/>
 
-        <EditText
-            android:id="@+id/editDelay"
+        <Button
+            android:id="@+id/setDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editReminder"
-            android:inputType="number"
-            android:hint="@string/delay"
+            android:text="@string/setDate"
+            android:onClick="showDateDialog"
+            />
+
+        <Button
+            android:id="@+id/setTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setDate"
+            android:text="@string/setTime"
+            android:onClick="showTimeDialog"
             />
 
         <Button
             android:id="@+id/buttonReminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editDelay"
-            android:onClick="setAlarmNow"
+            android:layout_below="@+id/setTime"
+            android:onClick="setAlarm"
             android:text="@string/alarmButton" />
-        <TimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonReminder" />
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/timePicker" />
+
     </RelativeLayout>
 </ScrollView>
