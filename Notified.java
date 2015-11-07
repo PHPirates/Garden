@@ -44,6 +44,9 @@ public class Notified extends AppCompatActivity {
         } else {
             textView1.setText(action_text);
         }
+        
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(getIntent().getExtras().getInt("NotifID"));
 
     }
 
