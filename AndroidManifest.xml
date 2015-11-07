@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.garden.gardenapp" >
+    package="com.abbyberkers.remember" >
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/garden"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
@@ -14,27 +14,18 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!-- custom action??
-                <action android:name="com.garden.gardenapp.action.NOTIFY" />
-                -->
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".Reminder"
-            android:label="@string/title_activity_reminder"
+            android:name=".Notified"
+            android:label="@string/title_activity_notified"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter> <!-- added an intent filter here with a Reminder action -->
-                <action android:name="com.garden.Reminder" />
-                <category android:name = "android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
-        <activity android:name=".DisplayNotification">
-            <intent-filter>
-                <action android:name="com.garden.DisplayNotification" />
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+        <activity android:name=".DisplayNotification" >
         </activity>
     </application>
 
 </manifest>
+
