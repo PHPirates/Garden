@@ -10,5 +10,13 @@
     <string name="snooze_result">I\'m snoozed</string>
     <string name="delay">Delay in seconds</string>
     <string name="alarmButton">Set reminder</string>
+    <string name="setTime">Set time</string>
+    <string name="setDate">Set date</string>
+    <string name="defaultNotif">Apparently I\'m snoozed?</string>
+    <string name="defaultSnooze">Apparently I\'m not snoozed,
+        do you still want to snooze me? Click below (or something)</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
