@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- the layout of the MainActivity -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,20 +18,19 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        >
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextView
-            android:id="@+id/hello"
+            android:id="@+id/please"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello" />
+            android:text="@string/please" />
 
         <EditText
-            android:id="@+id/editReminder"
+            android:id="@+id/edit_remember"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/hello"
+            android:layout_below="@+id/please"
             android:hint="@string/hint"
             android:inputType="textNoSuggestions"/>
 
@@ -40,27 +38,29 @@
             android:id="@+id/editDelay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editReminder"
+            android:layout_below="@+id/edit_remember"
             android:inputType="number"
-            android:hint="@string/delay"
-            />
+            android:hint="@string/delay"/>
 
         <Button
-            android:id="@+id/buttonReminder"
+            android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editDelay"
-            android:onClick="setAlarmNow"
-            android:text="@string/alarmButton" />
+            android:layout_below="@+id/edit_remember"
+            android:onClick="setAlarm"
+            android:text="@string/notify" />
+
         <TimePicker
             android:id="@+id/timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonReminder" />
+            android:layout_below="@+id/button1"/>
+
         <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/timePicker" />
+            android:layout_below="@+id/timePicker"/>
+
     </RelativeLayout>
 </ScrollView>
