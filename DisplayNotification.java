@@ -44,6 +44,7 @@ public class DisplayNotification extends AppCompatActivity {
 
         nm.notify(notifID, notif);
 
+        finish();
 
     }
 }
